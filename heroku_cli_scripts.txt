@@ -1,0 +1,299 @@
+Microsoft Windows [Version 6.3.9600]
+(c) 2013 Microsoft Corporation. All rights reserved.
+
+-------- git clone another github repo and push to own repo ------
+D:\Learning_2020\Salesforce Heroku 2020>git clone https://github.com/kantega/heroku-demo.git
+
+D:\Learning_2020\Salesforce Heroku 2020\heroku-demo>git remote remove origin
+
+D:\Learning_2020\Salesforce Heroku 2020\heroku-demo>git remote add origin https://github.com/GRawatCoder/heroku-demo.git
+
+D:\Learning_2020\Salesforce Heroku 2020\heroku-demo>git push -u origin master
+fatal: HttpRequestException encountered.
+   An error occurred while sending the request.
+Counting objects: 50, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (49/49), done.
+Writing objects: 100% (50/50), 1.72 MiB | 62.00 KiB/s, done.
+Total 50 (delta 12), reused 0 (delta 0)
+remote: Resolving deltas: 100% (12/12), done.
+To https://github.com/GRawatCoder/heroku-demo.git
+ * [new branch]      master -> master
+Branch master set up to track remote branch master from origin.
+
+---------- heroku git login ------
+D:\Learning_2020\Salesforce Heroku 2020\heroku-demo>heroku login
+heroku: Press any key to open up the browser to login or q to exit:
+Opening browser to https://cli-auth.heroku.com/auth/cli/browser/38ff595c-7aa8-49ec-baed-5d447f14b2ba?requestor=SFMyNTY.g3QAAAACZAAEZGF0YW0AAAAONTkuMTc3LjExNS4xMzNkAAZzaWduZWRuBgCCQCjxcwE.SEYKgaXreuq9uXJP4dLh2vTQ_hYnXftfuuWxActn7EM
+Logging in... done
+Logged in as gaurav.rawat194@gmail.com
+
+------ heroku create new app -------
+D:\Learning_2020\Salesforce Heroku 2020\heroku-demo>heroku create grawatcoder-heroku-dev
+Creating ⬢ grawatcoder-heroku-dev... done
+https://grawatcoder-heroku-dev.herokuapp.com/ | https://git.heroku.com/grawatcoder-heroku-dev.git
+
+------------- heroku deploy the changes from local --------
+D:\Learning_2020\Salesforce Heroku 2020\heroku-demo>git push heroku
+Counting objects: 50, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (49/49), done.
+Writing objects: 100% (50/50), 1.72 MiB | 58.00 KiB/s, done.
+Total 50 (delta 12), reused 0 (delta 0)
+remote: Compressing source files... done.
+remote: Building source:
+remote:
+remote: -----> Node.js app detected
+remote:
+remote: -----> Creating runtime environment
+remote:
+remote:        NPM_CONFIG_LOGLEVEL=error
+remote:        NODE_ENV=production
+remote:        NODE_MODULES_CACHE=true
+remote:        NODE_VERBOSE=false
+remote:
+remote: -----> Installing binaries
+remote:        engines.node (package.json):  10.3.0
+remote:        engines.npm (package.json):   unspecified (use default)
+remote:
+remote:        Resolving node version 10.3.0...
+remote:        Downloading and installing node 10.3.0...
+remote:        Using default npm version: 6.1.0
+remote:
+remote: -----> Installing dependencies
+remote:        Installing node modules (package.json)
+remote:        up to date in 0.414s
+remote:        found 0 vulnerabilities
+remote:
+remote:
+remote: -----> Build
+remote:
+remote: -----> Caching build
+remote:        - node_modules (nothing to cache)
+remote:
+remote: -----> Pruning devDependencies
+remote:        up to date in 0.361s
+remote:        found 0 vulnerabilities
+remote:
+remote:
+remote: -----> Build succeeded!
+remote: -----> Discovering process types
+remote:        Procfile declares types -> web
+remote:
+remote: -----> Compressing...
+remote:        Done: 19.1M
+remote: -----> Launching...
+remote:        Released v3
+remote:        https://grawatcoder-heroku-dev.herokuapp.com/ deployed to Heroku
+remote:
+remote: Verifying deploy... done.
+To https://git.heroku.com/grawatcoder-heroku-dev.git
+ * [new branch]      master -> master
+
+
+------------- create new pipeline and add the existing heroku app -----------
+D:\Learning_2020\Salesforce Heroku 2020\heroku-demo>heroku pipelines:create --app grawatcoder-heroku-dev --stage development grawatcoder-heroku
+Creating grawatcoder-heroku pipeline... done
+Adding ⬢ grawatcoder-heroku-dev to grawatcoder-heroku pipeline as development... done
+
+---------------- create staging app and add it to the existing pipeline ------------------
+D:\Learning_2020\Salesforce Heroku 2020\heroku-demo>heroku apps:create grawatcoder-heroku-staging
+Creating ⬢ grawatcoder-heroku-staging... done
+https://grawatcoder-heroku-staging.herokuapp.com/ | https://git.heroku.com/grawatcoder-heroku-staging.git
+
+D:\Learning_2020\Salesforce Heroku 2020\heroku-demo>heroku pipelines:add --app grawatcoder-heroku-staging --stage staging grawatcoder-heroku
+Adding ⬢ grawatcoder-heroku-staging to grawatcoder-heroku pipeline as staging... done
+
+--------------- promote the existing dev app from development area to staging area -------------
+D:\Learning_2020\Salesforce Heroku 2020\heroku-demo>heroku pipelines:promote --app grawatcoder-heroku-dev
+Fetching app info...
+Fetching apps from grawatcoder-heroku...
+Starting promotion to staging...
+Waiting for promotion to complete...
+
+Promotion successful
+grawatcoder-heroku-staging: succeeded
+
+---------------- do local changes, deploy to development on heroku, promote to staging area -----------
+D:\Learning_2020\Salesforce Heroku 2020\heroku-demo>git add .
+
+D:\Learning_2020\Salesforce Heroku 2020\heroku-demo>git commit -m "footer added"
+[master 4a7753f] footer added
+ 1 file changed, 1 insertion(+)
+
+D:\Learning_2020\Salesforce Heroku 2020\heroku-demo>git push heroku
+Counting objects: 4, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (4/4), 403 bytes | 201.00 KiB/s, done.
+Total 4 (delta 3), reused 0 (delta 0)
+remote: Compressing source files... done.
+remote: Building source:
+remote:
+remote: -----> Node.js app detected
+remote:
+remote: -----> Creating runtime environment
+remote:
+remote:        NPM_CONFIG_LOGLEVEL=error
+remote:        NODE_ENV=production
+remote:        NODE_MODULES_CACHE=true
+remote:        NODE_VERBOSE=false
+remote:
+remote: -----> Installing binaries
+remote:        engines.node (package.json):  10.3.0
+remote:        engines.npm (package.json):   unspecified (use default)
+remote:
+remote:        Resolving node version 10.3.0...
+remote:        Downloading and installing node 10.3.0...
+remote:        Using default npm version: 6.1.0
+remote:
+remote: -----> Restoring cache
+remote:        - node_modules (not cached - skipping)
+remote:
+remote: -----> Installing dependencies
+remote:        Installing node modules (package.json)
+remote:        up to date in 0.39s
+remote:        found 0 vulnerabilities
+remote:
+remote:
+remote: -----> Build
+remote:
+remote: -----> Caching build
+remote:        - node_modules (nothing to cache)
+remote:
+remote: -----> Pruning devDependencies
+remote:        up to date in 0.377s
+remote:        found 0 vulnerabilities
+remote:
+remote:
+remote: -----> Build succeeded!
+remote: -----> Discovering process types
+remote:        Procfile declares types -> web
+remote:
+remote: -----> Compressing...
+remote:        Done: 19.1M
+remote: -----> Launching...
+remote:        Released v4
+remote:        https://grawatcoder-heroku-dev.herokuapp.com/ deployed to Heroku
+remote:
+remote: Verifying deploy... done.
+To https://git.heroku.com/grawatcoder-heroku-dev.git
+   96b27a1..4a7753f  master -> master
+
+D:\Learning_2020\Salesforce Heroku 2020\heroku-demo>heroku pipelines:promote --app grawatcoder-heroku-dev
+Fetching app info...
+Fetching apps from grawatcoder-heroku...
+Starting promotion to staging...
+Waiting for promotion to complete...
+
+Promotion successful
+grawatcoder-heroku-staging: succeeded
+
+------------ create producation app to be deployable to production staging area ----------------
+D:\Learning_2020\Salesforce Heroku 2020\heroku-demo>heroku apps:create grawat-coder
+Creating ⬢ grawat-coder... done
+https://grawat-coder.herokuapp.com/ | https://git.heroku.com/grawat-coder.git
+
+-------------- add production app to the production area ------------
+D:\Learning_2020\Salesforce Heroku 2020\heroku-demo>heroku pipelines:add --app grawat-coder --stage production grawatcoder-heroku
+Adding ⬢ grawat-coder to grawatcoder-heroku pipeline as production... done
+
+------------- promote from stage to procution ---------------
+D:\Learning_2020\Salesforce Heroku 2020\heroku-demo>heroku pipelines:promote --app grawatcoder-heroku-staging
+Fetching app info...
+Fetching apps from grawatcoder-heroku...
+Starting promotion to production...
+Waiting for promotion to complete...
+
+Promotion successful
+grawat-coder: succeeded
+
+------------- add changes to local, deploy until production -------------
+D:\Learning_2020\Salesforce Heroku 2020\heroku-demo>git add .
+
+D:\Learning_2020\Salesforce Heroku 2020\heroku-demo>git commit -m "header added"
+[master 806f4fe] header added
+ 1 file changed, 1 insertion(+)
+
+D:\Learning_2020\Salesforce Heroku 2020\heroku-demo>git push heroku
+Counting objects: 4, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (4/4), 363 bytes | 181.00 KiB/s, done.
+Total 4 (delta 3), reused 0 (delta 0)
+remote: Compressing source files... done.
+remote: Building source:
+remote:
+remote: -----> Node.js app detected
+remote:
+remote: -----> Creating runtime environment
+remote:
+remote:        NPM_CONFIG_LOGLEVEL=error
+remote:        NODE_ENV=production
+remote:        NODE_MODULES_CACHE=true
+remote:        NODE_VERBOSE=false
+remote:
+remote: -----> Installing binaries
+remote:        engines.node (package.json):  10.3.0
+remote:        engines.npm (package.json):   unspecified (use default)
+remote:
+remote:        Resolving node version 10.3.0...
+remote:        Downloading and installing node 10.3.0...
+remote:        Using default npm version: 6.1.0
+remote:
+remote: -----> Restoring cache
+remote:        - node_modules (not cached - skipping)
+remote:
+remote: -----> Installing dependencies
+remote:        Installing node modules (package.json)
+remote:        up to date in 0.393s
+remote:        found 0 vulnerabilities
+remote:
+remote:
+remote: -----> Build
+remote:
+remote: -----> Caching build
+remote:        - node_modules (nothing to cache)
+remote:
+remote: -----> Pruning devDependencies
+remote:        up to date in 0.373s
+remote:        found 0 vulnerabilities
+remote:
+remote:
+remote: -----> Build succeeded!
+remote: -----> Discovering process types
+remote:        Procfile declares types -> web
+remote:
+remote: -----> Compressing...
+remote:        Done: 19.1M
+remote: -----> Launching...
+remote:        Released v5
+remote:        https://grawatcoder-heroku-dev.herokuapp.com/ deployed to Heroku
+remote:
+remote: Verifying deploy... done.
+To https://git.heroku.com/grawatcoder-heroku-dev.git
+   4a7753f..806f4fe  master -> master
+
+D:\Learning_2020\Salesforce Heroku 2020\heroku-demo>git add .
+
+D:\Learning_2020\Salesforce Heroku 2020\heroku-demo>git commit -m "welcome message"
+[master 96db495] welcome message
+ 1 file changed, 1 insertion(+)
+
+D:\Learning_2020\Salesforce Heroku 2020\heroku-demo>git push origin master
+fatal: HttpRequestException encountered.
+   An error occurred while sending the request.
+Counting objects: 12, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (12/12), done.
+Writing objects: 100% (12/12), 1.11 KiB | 283.00 KiB/s, done.
+Total 12 (delta 8), reused 0 (delta 0)
+remote: Resolving deltas: 100% (8/8), completed with 2 local objects.
+To https://github.com/GRawatCoder/heroku-demo.git
+   96b27a1..96db495  master -> master
+
+----------------- create new branch for pull request ---------------
+D:\Learning_2020\Salesforce Heroku 2020\heroku-demo>git checkout -b heroku-demo-changethemeSwitched to a new branch 'heroku-demo-changetheme'
+
+
+D:\Learning_2020\Salesforce Heroku 2020\heroku-demo>
